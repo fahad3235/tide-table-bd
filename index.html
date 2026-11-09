@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tide Table BD &mdash; Bangladesh Coast Tide Times</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1 id="title">Bangladesh Coast Tide Table</h1>
+    <p class="subtitle" id="subtitle">Tide time predictor for the Bangladesh coast &mdash; fully offline</p>
+    <button id="langBtn" class="lang-btn" type="button">&#x09ac;&#x09be;&#x0982;&#x09b2;&#x09be;</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ CALIBRATION ============ -->
+  <section class="panel" aria-labelledby="calHeading">
+    <h2 id="calHeading">Tide observation (calibration)</h2>
+    <form id="calForm" novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="stationSelect" id="lblStation">Station</label>
+          <select id="stationSelect"></select>
+        </div>
+        <div class="field">
+          <label for="calInput" id="lblCal">Last observed high-tide time</label>
+          <input id="calInput" type="datetime-local" step="60">
+          <p class="hint" id="calHint">Enter one observed high-tide time &mdash; the app projects all later tides from it. There is no sample data; your own observation is the only source.</p>
+          <p class="err" id="calError" hidden></p>
+        </div>
+      </div>
+      <button id="saveCalBtn" class="primary" type="submit">Save calibration</button>
+      <p class="ok" id="savedMsg" hidden>Saved.</p>
+    </form>
+  </section>
+
+  <!-- ============ EMPTY STATE ============ -->
+  <section class="panel empty-panel" id="emptyState" hidden>
+    <h2 id="emptyTitle">No observation for this station yet</h2>
+    <p id="emptyText">To see tides, first enter one observed high-tide time. Note the time when the rising water reaches its highest point, or check the port notice board.</p>
+  </section>
+
+  <!-- ============ RESULTS (need a calibration) ============ -->
+  <div id="results" hidden>
+
+    <section class="panel next-card" aria-labelledby="nextHeading">
+      <h2 id="nextHeading">Next tide</h2>
+      <div class="next-row">
+        <span class="badge" id="nextType">&mdash;</span>
+        <span class="next-time" id="nextTime">&mdash;</span>
+      </div>
+      <p class="countdown"><span id="inLabel">in</span> <span id="nextCountdown">&mdash;</span></p>
+    </section>
+
+    <section class="panel" aria-labelledby="todayHeading">
+      <h2 id="todayHeading">Today&rsquo;s tides</h2>
+      <div class="chip-strip" id="todayStrip"></div>
+      <p class="empty" id="noTidesToday" hidden>No tides today.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="moonHeading">
+      <h2 id="moonHeading">Moon</h2>
+      <p class="moon-line"><span id="moonAgeLabel">Moon age</span>: <strong id="moonAge">&mdash;</strong> <span id="moonPhase">&mdash;</span></p>
+    </section>
+
+    <section class="panel" aria-labelledby="weekHeading">
+      <h2 id="weekHeading">7-day table</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th id="colDate">Date</th><th id="colTides">Tides</th><th id="colMoon">Moon</th></tr></thead>
+          <tbody id="weekBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ DATA ============ -->
+  <section class="panel" aria-labelledby="dataHeading">
+    <h2 id="dataHeading">Export / import / erase data</h2>
+    <div class="data-block">
+      <button id="exportBtn" class="secondary" type="button">Download JSON</button>
+      <a id="exportLink" hidden download="tide-table-bd.json">download</a>
+    </div>
+    <div class="data-block">
+      <label for="importText" id="importLabel">Import JSON</label>
+      <textarea id="importText" rows="6" placeholder="Paste JSON here&hellip;"></textarea>
+      <button id="importBtn" class="secondary" type="button">Import</button>
+      <p class="ok" id="importOk" hidden>Import successful.</p>
+      <p class="err" id="importFail" hidden></p>
+    </div>
+    <div class="data-block danger">
+      <label for="eraseInput" id="eraseLabel">Type DELETE to erase everything</label>
+      <input id="eraseInput" type="text" autocomplete="off" placeholder="DELETE">
+      <button id="eraseBtn" class="danger-btn" type="button">Erase all data</button>
+      <p class="ok" id="erasedMsg" hidden>All data erased.</p>
+      <p class="err" id="eraseWrong" hidden>Type DELETE exactly.</p>
+    </div>
+  </section>
+
+  <p class="disclaimer" id="disclaimer">Approximate estimate &mdash; based only on the M2 tide cycle (12 h 25 m). Weather, wind and river flow shift real tide times; they can drift about 1 hour over a week. NOT for navigation safety; verify with BIWTA / port notices before fishing or boating. Recalibrate with a fresh observed high tide every few days.</p>
+</main>
+
+<footer class="wrap foot">
+  <p id="footer">tide-table-bd &middot; offline &middot; your data stays on your device</p>
+</footer>
+
+<script src="logic.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
